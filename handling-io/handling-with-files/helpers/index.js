@@ -1,9 +1,11 @@
 const { sortingResults } = require('./array');
-const { validateCsvFile } = require('./validation');
-const { exportJsonFromCsv } = require('./export-file');
+const { validateCsvFileByCallbackFunc, validateCsvFileByPromiseFunc } = require('./validation');
+const { exportJsonFromCsvByCallbackFunc, exportJsonFromCsvByPromiseFunc } = require('./export-file');
 
 module.exports = {
-  validateCsvFile,
+  validateCsvFileByCallbackFunc,
+  validateCsvFileByPromiseFunc,
   sortingResults,
-  exportJsonFromCsv,
+  exportJsonFromCsvByCallbackFunc,
+  exportJsonFromCsvByPromiseFunc
 };

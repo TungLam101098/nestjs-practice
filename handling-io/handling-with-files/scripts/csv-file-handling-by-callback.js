@@ -1,12 +1,12 @@
 const { expectedColumns } = require('../constants');
-const { validateCsvFile, exportJsonFromCsv, sortingResults } = require('../helpers');
+const { validateCsvFileByCallbackFunc, exportJsonFromCsvByCallbackFunc, sortingResults } = require('../helpers');
 
 const csvFilePath = './source/data.csv';
 const jsonFilePath = './source/data.json';
 
 const exportJsonFileCallback = (error) => {
   if (error) {
-    console.error(`Error: ${error}`);
+    console.error(error);
   } else {
     console.log('CSV file converted to JSON successfully.');
   }
@@ -14,9 +14,9 @@ const exportJsonFileCallback = (error) => {
 
 const validateCsvFileCallback = (error, filePath) => {
   if (error) {
-    console.error(`Error: ${error}`);
+    console.error(error);
   } else {
-    exportJsonFromCsv({
+    exportJsonFromCsvByCallbackFunc({
       csvFilePath: filePath,
       filterResults: { getResults: sortingResults, key: 'quantity' },
       jsonFilePath,
@@ -25,4 +25,8 @@ const validateCsvFileCallback = (error, filePath) => {
   }
 }
 
-validateCsvFile({ csvFilePath, expectedColumns, callback: validateCsvFileCallback });
+validateCsvFileByCallbackFunc({
+  csvFilePath,
+  expectedColumns,
+  callback: validateCsvFileCallback,
+});
