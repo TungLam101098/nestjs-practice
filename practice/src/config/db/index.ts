@@ -1,13 +1,11 @@
 import mongoose from 'mongoose';
 
+import { DATABASE } from '../../constants';
+
 let databaseManager: DatabaseManager | null = null;
 
-const MONGO_URL_DEFAULT = 'mongodb://127.0.0.1/my-database';
-const MONGO_URL = process.env.MONGO_URL || MONGO_URL_DEFAULT;
+const MONGO_URL = process.env.MONGO_URL || DATABASE.MONGO_URL_DEFAULT;
 
-/**
- * Class of database manager using singleton pattern
- */
 class DatabaseManager {
   /**
    * Connect to Mongoose via URL
@@ -17,9 +15,9 @@ class DatabaseManager {
     try {
       await mongoose.connect(MONGO_URL);
 
-      console.log('connect to database successfully');
+      console.log('Connect to mongo database successfully');
     } catch (error) {
-      console.error('cannot connect to mongo database', error);
+      console.error('Cannot connect to mongo database', error);
 
       // Exit app when cannot connect to mongo database
       process.exit();
