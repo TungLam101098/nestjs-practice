@@ -1,10 +1,10 @@
 import { Router } from 'express';
 
-const router = Router();
+import AuthController from '@controllers/auth-controller';
 
-// TODO: Handle register API
-router.post('/', (request, response) => {
-  response.end('Register successfully');
-});
+const router = Router();
+const authInstance = AuthController.getInstance();
+
+router.post('/', authInstance.handleRegistrationRequest);
 
 export default router;
