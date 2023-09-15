@@ -9,4 +9,6 @@ export default {
    * - :response-time: Time taken to process the request in milliseconds.
    */
   FORMAT: ':method :url :status :res[content-length] - :response-time ms',
+  ERROR_COLOR: '\x1b[31m',
+  INFO_COLOR: '\x1b[32m',
 };
