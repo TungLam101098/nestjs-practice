@@ -4,7 +4,7 @@ import morgan from 'morgan';
 
 import route from './routes';
 import DatabaseManager from './config/db';
-import { handleRouteNotFound } from './middlewares/error-handler';
+import { handleRouteNotFound, handleGeneralError } from '@middlewares/error-handler';
 import { LOGGER } from './constants';
 
 const PORT = process.env.PORT || 3000;
@@ -31,7 +31,12 @@ if (SETTING === PRODUCTION_ENVIRONMENT) {
 // Handle routes
 route(app);
 
-// Handle middleware
+/**
+ * Handle middleware with Top-down priority
+ * - General error
+ * - Route not found errors
+ */
+app.use(handleGeneralError);
 app.use(handleRouteNotFound);
 
 const startApp = async () => {

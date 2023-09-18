@@ -1,6 +1,7 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 
-import { MESSAGE } from '../constants';
+import HttpException from '@exceptions/HttpException';
+import { MESSAGE } from '@constants';
 
 /**
  * @param {Request}
@@ -16,4 +17,27 @@ const handleRouteNotFound = (request: Request, response: Response) => {
   });
 };
 
-export { handleRouteNotFound };
+/**
+ * Middleware to handle general errors and send an appropriate response.
+ * @param {HttpException} error - The error object.
+ * @param {Request} _request - The Express request object.
+ * @param {Response} response - The Express response object.
+ * @param {NextFunction} _next - The Express next function (unused, but required).
+ */
+const handleGeneralError = (
+  error: HttpException,
+  _request: Request,
+  response: Response,
+  _next: NextFunction
+) => {
+  const { INTERNAL_SERVER } = MESSAGE.ERROR;
+  const status = error.status || INTERNAL_SERVER.CODE;
+  const message = error.message || INTERNAL_SERVER.MESSAGE;
+
+  response.status(status).send({
+    status,
+    message,
+  });
+};
+
+export { handleRouteNotFound, handleGeneralError };
