@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 
 import HttpException from '@exceptions/HttpException';
-import { MESSAGE } from '@constants';
+import { MESSAGES } from '@constants';
 
 /**
  * @param {Request}
@@ -9,7 +9,7 @@ import { MESSAGE } from '@constants';
  * Respond to request with status 404 for route not found
  */
 const handleRouteNotFound = (request: Request, response: Response) => {
-  const { PATH_NOT_FOUND } = MESSAGE.ERROR;
+  const { PATH_NOT_FOUND } = MESSAGES.ERROR;
 
   response.status(PATH_NOT_FOUND.CODE).send({
     code: PATH_NOT_FOUND.CODE,
@@ -30,7 +30,7 @@ const handleGeneralError = (
   response: Response,
   _next: NextFunction
 ) => {
-  const { INTERNAL_SERVER } = MESSAGE.ERROR;
+  const { INTERNAL_SERVER } = MESSAGES.ERROR;
   const status = error.status || INTERNAL_SERVER.CODE;
   const message = error.message || INTERNAL_SERVER.MESSAGE;
 
