@@ -1,5 +1,6 @@
-import course from '@schemas/course';
+import { FilterQuery } from 'mongoose';
 
+import course from '@schemas/course';
 import { Course } from '@interfaces';
 
 /**
@@ -22,6 +23,14 @@ const getCourseById = async (id: string) => await course.findById(id).exec();
  */
 const getCoursesByName = async (names: string[]) =>
   await course.find({ name: { $in: names } }).exec();
+
+/**
+ * Retrieves a collection of courses from the database based on the provided query condition
+ * @param {FilterQuery<Course>} condition - The query condition to filter courses
+ * @returns {Promise<Course[]>} - A promise that resolves to an array of matching courses
+ */
+const getCoursesByCondition = async (condition: FilterQuery<Course>) =>
+  await course.find(condition).exec();
 
 /**
  * Save an array of courses to the database
@@ -62,4 +71,5 @@ export {
   saveCourses,
   updateCourseById,
   deleteCourseById,
+  getCoursesByCondition,
 };
