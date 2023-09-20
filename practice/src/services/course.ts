@@ -41,11 +41,25 @@ const saveCourses = async (courseData: Course[]) => {
  * @param {Course} courseData - The updated course data
  * @returns {Promise<Course | null>} - A promise that resolves to the updated course or null if not found
  */
-const updateCoursesById = async (id: string, courseData: Course) =>
+const updateCourseById = async (id: string, courseData: Course) =>
   await course
     .findOneAndUpdate({ _id: id }, courseData, {
       new: true,
     })
     .exec();
 
-export { getCourses, getCourseById, getCoursesByName, saveCourses, updateCoursesById };
+/**
+ * Delete a course from the database by its ID
+ * @param {string} id - The ID of the course to be deleted
+ * @returns {Promise<Course | null>} - A promise that resolves to the deleted course or null if not found
+ */
+const deleteCourseById = async (id: string) => await course.findByIdAndDelete(id).exec();
+
+export {
+  getCourses,
+  getCourseById,
+  getCoursesByName,
+  saveCourses,
+  updateCourseById,
+  deleteCourseById,
+};

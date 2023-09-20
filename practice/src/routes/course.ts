@@ -15,4 +15,7 @@ router.get('/:id', verifyToken, courseInstance.handleGetCourseDetailRequest);
 // Route to handle POST requests for creating courses
 router.post('/', verifyToken, courseInstance.handleCreateCoursesRequest);
 
+// Route to handle DELETE requests for delete course by id
+router.delete('/:id', verifyToken, courseInstance.handleDeleteCourseRequest);
+
 export default router;

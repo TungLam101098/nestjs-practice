@@ -1,6 +1,12 @@
 import { NextFunction, Response } from 'express';
 
-import { getCoursesByName, saveCourses, getCourses, getCourseById } from '@services/course';
+import {
+  getCoursesByName,
+  saveCourses,
+  getCourses,
+  getCourseById,
+  deleteCourseById,
+} from '@services/course';
 import { ensureError, logger } from '@utils';
 import { AuthenticatedRequest, Course } from '@interfaces';
 import { EXCEPTIONS } from '@constants';
@@ -9,7 +15,7 @@ let courseInstance: CourseController | null = null;
 
 class CourseController {
   /**
-   * Handle user create courses requests
+   * Handle GET request to user create courses
    * @param {AuthenticatedRequest} req - authenticated request object
    * @param {Response} res - Response object
    * @param {NextFunction} next - The next middleware function in the processing chain
@@ -50,7 +56,7 @@ class CourseController {
   }
 
   /**
-   * Handles a GET request to retrieve a list of courses
+   * Handle GET request to retrieve a list of courses
    * @param {AuthenticatedRequest} req - The authenticated request object
    * @param {Response} res - The response object
    * @param {NextFunction} next - The next middleware function
@@ -70,7 +76,7 @@ class CourseController {
   }
 
   /**
-   * Handles a GET request to retrieve details of a specific course by its id
+   * Handle GET request to retrieve details of a specific course by its id
    * @param {AuthenticatedRequest} req - The authenticated request object
    * @param {Response} res - The response object
    * @param {NextFunction} next - The next middleware function
@@ -83,6 +89,37 @@ class CourseController {
       res.send(course);
     } catch (error) {
       // Catch errors while finding course
+      const { message } = ensureError(error);
+      logger.error(message);
+
+      next(EXCEPTIONS.BAD_REQUEST_EXCEPTION);
+    }
+  }
+
+  /**
+   * Handle DELETE request to delete a course by its id
+   * @param {AuthenticatedRequest} req - The authenticated request object
+   * @param {Response} res - The response object
+   * @param {NextFunction} next - The next middleware function
+   */
+  async handleDeleteCourseRequest(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+    try {
+      const isNotAdmin = !req.isAdmin;
+
+      if (isNotAdmin) {
+        return next(EXCEPTIONS.PERMISSION_DENIED_EXCEPTION);
+      }
+
+      const courseId = req.params.id;
+      const course = await deleteCourseById(courseId);
+
+      if (!course) {
+        return next(EXCEPTIONS.BAD_REQUEST_EXCEPTION);
+      }
+
+      res.send(course);
+    } catch (error) {
+      // Catch errors while deleting course: courseId not found...
       const { message } = ensureError(error);
       logger.error(message);
 
