@@ -1,6 +1,6 @@
 import { NextFunction, Response } from 'express';
 
-import { getCoursesByName, saveCourses } from '@services/course';
+import { getCoursesByName, saveCourses, getCourses } from '@services/course';
 import { ensureError, logger } from '@utils';
 import { AuthenticatedRequest, Course } from '@interfaces';
 import { EXCEPTIONS } from '@constants';
@@ -10,12 +10,12 @@ let courseInstance: CourseController | null = null;
 class CourseController {
   /**
    * Handle user create courses requests
-   * @param {AuthenticatedRequest} req - AuthenticatedRequest object
+   * @param {AuthenticatedRequest} req - authenticated request object
    * @param {Response} res - Response object
    * @param {NextFunction} next - The next middleware function in the processing chain
    */
   async handleCreateCoursesRequest(req: AuthenticatedRequest, res: Response, next: NextFunction) {
-    // TODO: Update verify the body request using middleware
+    // TODO: Verify the body request using middleware
     try {
       const isNotAdmin = !req.isAdmin;
 
@@ -41,7 +41,28 @@ class CourseController {
 
       res.send({ courses });
     } catch (error) {
-      // Catch error while finding or saving courses: missing field, course name is existed..
+      // Catch errors while finding or saving courses: missing field, course name is existed..
+      const { message } = ensureError(error);
+      logger.error(message);
+
+      next(EXCEPTIONS.SERVICE_UNAVAILABLE_EXCEPTION);
+    }
+  }
+
+  /**
+   * Handles a GET request to retrieve a list of courses.
+   * @param {AuthenticatedRequest} req - The authenticated request object.
+   * @param {Response} res - The response object.
+   * @param {NextFunction} next - The next middleware function.
+   */
+  async handleGetCoursesRequest(_req: AuthenticatedRequest, res: Response, next: NextFunction) {
+    // TODO: Verify the body request using middleware
+    try {
+      const courses = await getCourses();
+
+      res.send({ courses });
+    } catch (error) {
+      // Catch errors while finding courses
       const { message } = ensureError(error);
       logger.error(message);
 
