@@ -6,6 +6,10 @@ import { verifyToken } from '@middlewares/auth-handler';
 const router = Router();
 const courseInstance = CourseController.getInstance();
 
+// Route to handle GET requests for retrieving courses
+router.get('/', verifyToken, courseInstance.handleGetCoursesRequest);
+
+// Route to handle POST requests for creating courses
 router.post('/', verifyToken, courseInstance.handleCreateCoursesRequest);
 
 export default router;
