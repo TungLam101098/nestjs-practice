@@ -28,5 +28,17 @@ export default {
       CODE: 401,
       MESSAGE: 'Invalid password',
     },
+    PERMISSION_DENIED: {
+      CODE: 403,
+      MESSAGE: 'Permission denied',
+    },
+    COURSES_NAME_EXISTS: {
+      CODE: 409,
+      MESSAGE: 'Course name is existed',
+    },
+    NON_AUTHORIZATION: {
+      CODE: 401,
+      MESSAGE: 'Unauthorized',
+    },
   },
 };
