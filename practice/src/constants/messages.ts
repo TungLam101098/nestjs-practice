@@ -20,5 +20,13 @@ export default {
       CODE: 503,
       MESSAGE: 'Service unavailable',
     },
+    USERNAME_NO_EXISTS: {
+      CODE: 404,
+      MESSAGE: 'Username does not exist',
+    },
+    INVALID_PASSWORD: {
+      CODE: 401,
+      MESSAGE: 'Invalid password',
+    },
   },
 };
