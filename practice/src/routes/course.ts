@@ -15,6 +15,9 @@ router.get('/:id', verifyToken, courseInstance.handleGetCourseDetailRequest);
 // Route to handle POST requests for creating courses
 router.post('/', verifyToken, courseInstance.handleCreateCoursesRequest);
 
+// Route to handle PUT requests for update course by id
+router.put('/:id', verifyToken, courseInstance.handleUpdateCourseRequest);
+
 // Route to handle DELETE requests for delete course by id
 router.delete('/:id', verifyToken, courseInstance.handleDeleteCourseRequest);
 

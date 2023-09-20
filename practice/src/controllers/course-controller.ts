@@ -6,6 +6,8 @@ import {
   getCourses,
   getCourseById,
   deleteCourseById,
+  updateCourseById,
+  getCoursesByCondition,
 } from '@services/course';
 import { ensureError, logger } from '@utils';
 import { AuthenticatedRequest, Course } from '@interfaces';
@@ -89,6 +91,52 @@ class CourseController {
       res.send(course);
     } catch (error) {
       // Catch errors while finding course
+      const { message } = ensureError(error);
+      logger.error(message);
+
+      next(EXCEPTIONS.BAD_REQUEST_EXCEPTION);
+    }
+  }
+
+  /**
+   * Handle PUT request to update a course by its id
+   * @param {AuthenticatedRequest} req - The authenticated request object
+   * @param {Response} res - The response object
+   * @param {NextFunction} next - The next middleware function
+   */
+  async handleUpdateCourseRequest(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+    // TODO: Verify the body request using middleware
+    try {
+      const isNotAdmin = !req.isAdmin;
+
+      if (isNotAdmin) {
+        return next(EXCEPTIONS.PERMISSION_DENIED_EXCEPTION);
+      }
+
+      const { name, category, description }: Course = req.body;
+      const isInvalidRequest = !name || !category || !description;
+
+      if (isInvalidRequest) {
+        return next(EXCEPTIONS.BAD_REQUEST_EXCEPTION);
+      }
+
+      const courseId = req.params.id;
+
+      // Verify courseId valid
+      await getCourseById(courseId);
+
+      const coursesFoundByName = await getCoursesByCondition({ name });
+      const isExistsCourses = !!coursesFoundByName.length;
+
+      if (isExistsCourses) {
+        return next(EXCEPTIONS.COURSES_NAME_EXISTS_EXCEPTION);
+      }
+
+      const course = await updateCourseById(courseId, req.body);
+
+      res.send(course);
+    } catch (error) {
+      // Catch errors while finding by id, name and updating course
       const { message } = ensureError(error);
       logger.error(message);
 
