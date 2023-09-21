@@ -48,7 +48,7 @@ class CourseController {
       const courses = await saveCourses(req.body);
 
       res.send({ courses });
-    } catch (error) {
+    } catch (error: unknown) {
       // Catch errors while finding or saving courses: missing field, course name is existed..
       const { message } = ensureError(error);
       logger.error(message);
@@ -68,7 +68,7 @@ class CourseController {
       const courses = await getCourses();
 
       res.send({ courses });
-    } catch (error) {
+    } catch (error: unknown) {
       // Catch errors while finding courses
       const { message } = ensureError(error);
       logger.error(message);
@@ -89,7 +89,7 @@ class CourseController {
       const course = await getCourseById(courseId);
 
       res.send(course);
-    } catch (error) {
+    } catch (error: unknown) {
       // Catch errors while finding course
       const { message } = ensureError(error);
       logger.error(message);
@@ -135,7 +135,7 @@ class CourseController {
       const course = await updateCourseById(courseId, req.body);
 
       res.send(course);
-    } catch (error) {
+    } catch (error: unknown) {
       // Catch errors while finding by id, name and updating course
       const { message } = ensureError(error);
       logger.error(message);
@@ -166,7 +166,7 @@ class CourseController {
       }
 
       res.send(course);
-    } catch (error) {
+    } catch (error: unknown) {
       // Catch errors while deleting course: courseId not found...
       const { message } = ensureError(error);
       logger.error(message);
