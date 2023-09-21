@@ -40,5 +40,13 @@ export default {
       CODE: 401,
       MESSAGE: 'Unauthorized',
     },
+    COURSES_INVALID: {
+      CODE: 400,
+      MESSAGE: 'Courses are invalid',
+    },
+    COURSES_EXISTS: {
+      CODE: 409,
+      MESSAGE: 'Courses are existed',
+    },
   },
 };
