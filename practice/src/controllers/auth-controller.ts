@@ -82,7 +82,7 @@ class AuthController {
       const token = generateAccessToken(userId, user.isAdmin);
 
       res.send({ token });
-    } catch (error) {
+    } catch (error: unknown) {
       // Catch error while finding user
       const { message } = ensureError(error);
       logger.error(message);
