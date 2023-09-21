@@ -8,4 +8,6 @@ const wishlistInstance = WishlistController.getInstance();
 
 router.post('/', verifyToken, wishlistInstance.handleAddCourseToWishlistRequest);
 
+router.get('/', verifyToken, wishlistInstance.handleGetWishlistRequest);
+
 export default router;
