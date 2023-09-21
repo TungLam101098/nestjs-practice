@@ -26,4 +26,15 @@ const updateCourseIdsByUserId = async (userId: string, courseIds: string[]) =>
     .findOneAndUpdate({ userId }, { $addToSet: { courseIds: { $each: courseIds } } }, { new: true })
     .exec();
 
-export { saveWishlist, getWishlistByUserId, updateCourseIdsByUserId };
+/**
+ * Delete the ids in 'courseIds' field for a user's wishlist in the database
+ * @param {string} userId - The user ID associated with the wishlist item to be updated
+ * @param {string[]} courseIds - An array of course IDs to add to the user's wishlist
+ * @returns {Promise<Wishlist | null>} - A promise that resolves to the updated wishlist item or null if not found
+ */
+const deleteCourseIdsByUserId = async (userId: string, courseIds: string[]) =>
+  await wishlist
+    .findOneAndUpdate({ userId }, { $pull: { courseIds: { $in: courseIds } } }, { new: true })
+    .exec();
+
+export { saveWishlist, getWishlistByUserId, updateCourseIdsByUserId, deleteCourseIdsByUserId };

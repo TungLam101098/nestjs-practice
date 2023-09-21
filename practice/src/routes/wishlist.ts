@@ -10,4 +10,6 @@ router.post('/', verifyToken, wishlistInstance.handleAddCourseToWishlistRequest)
 
 router.get('/', verifyToken, wishlistInstance.handleGetWishlistRequest);
 
+router.delete('/', verifyToken, wishlistInstance.handleDeleteCoursesFromWishlistRequest);
+
 export default router;
