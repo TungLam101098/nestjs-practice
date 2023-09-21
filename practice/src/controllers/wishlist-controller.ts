@@ -1,6 +1,11 @@
 import { Response, NextFunction } from 'express';
 
-import { getWishlistByUserId, saveWishlist, updateCourseIdsByUserId } from '@services/wishlist';
+import {
+  getWishlistByUserId,
+  saveWishlist,
+  updateCourseIdsByUserId,
+  deleteCourseIdsByUserId,
+} from '@services/wishlist';
 import { getCourses } from '@services/course';
 import { ensureError, logger } from '@utils';
 import { AuthenticatedRequest } from '@interfaces';
@@ -89,8 +94,7 @@ class WishlistController {
     next: NextFunction
   ) {
     try {
-      const isInvalidParams =
-        !userId || !courseIdsRequest.length || !courseIdsDatabase.length || !res || !next;
+      const isInvalidParams = !userId || !courseIdsRequest.length || !res || !next;
 
       if (isInvalidParams) {
         logger.error('Missing field when updating wishlist');
@@ -145,6 +149,64 @@ class WishlistController {
       res.send(emptyWishlist);
     } catch (error: unknown) {
       // Catch errors while finding wishlist
+      const { message } = ensureError(error);
+      logger.error(message);
+
+      next(EXCEPTIONS.SERVICE_UNAVAILABLE_EXCEPTION);
+    }
+  }
+
+  /**
+   * Handle DELETE request to delete course ids from a wishlist
+   * @param {AuthenticatedRequest} req - The authenticated request object
+   * @param {Response} res - The response object
+   * @param {NextFunction} next - The next middleware function
+   */
+  async handleDeleteCoursesFromWishlistRequest(
+    req: AuthenticatedRequest,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const courseIdsRequest: string[] = req.body;
+      const isInvalidRequest = !(typeof courseIdsRequest === 'object') || !courseIdsRequest.length;
+
+      if (isInvalidRequest) {
+        return next(EXCEPTIONS.BAD_REQUEST_EXCEPTION);
+      }
+
+      const userId = req.userId;
+
+      if (!userId) {
+        return next(EXCEPTIONS.PERMISSION_DENIED_EXCEPTION);
+      }
+
+      const wishlistFound = await getWishlistByUserId(userId);
+
+      if (!wishlistFound) {
+        return next(EXCEPTIONS.BAD_REQUEST_EXCEPTION);
+      }
+
+      const courseIdsDatabase = wishlistFound.courseIds;
+      const isInvalidCourseIds = !courseIdsRequest.every((courseId) =>
+        courseIdsDatabase.includes(courseId)
+      );
+
+      if (isInvalidCourseIds) {
+        return next(EXCEPTIONS.BAD_REQUEST_EXCEPTION);
+      }
+
+      const wishlist = await deleteCourseIdsByUserId(userId, courseIdsRequest);
+
+      if (!wishlist) {
+        return next(EXCEPTIONS.BAD_REQUEST_EXCEPTION);
+      }
+
+      const courseIds = wishlist.courseIds;
+
+      res.send(courseIds);
+    } catch (error: unknown) {
+      // Catch errors while finding and deleting course ids from wishlist
       const { message } = ensureError(error);
       logger.error(message);
 
