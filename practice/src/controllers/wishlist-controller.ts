@@ -119,6 +119,40 @@ class WishlistController {
   }
 
   /**
+   * Handle GET request to retrieve a wishlist
+   * @param {AuthenticatedRequest} req - The authenticated request object
+   * @param {Response} res - The response object
+   * @param {NextFunction} next - The next middleware function
+   */
+  async handleGetWishlistRequest(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+    try {
+      const userId = req.userId;
+
+      if (!userId) {
+        return next(EXCEPTIONS.PERMISSION_DENIED_EXCEPTION);
+      }
+
+      const wishlist = await getWishlistByUserId(userId);
+
+      if (wishlist) {
+        const courseIds = wishlist.courseIds;
+
+        return res.send(courseIds);
+      }
+
+      const emptyWishlist: string[] = [];
+
+      res.send(emptyWishlist);
+    } catch (error: unknown) {
+      // Catch errors while finding wishlist
+      const { message } = ensureError(error);
+      logger.error(message);
+
+      next(EXCEPTIONS.SERVICE_UNAVAILABLE_EXCEPTION);
+    }
+  }
+
+  /**
    * Get singleton authentication controller instance
    */
   static getInstance() {
