@@ -57,14 +57,8 @@ class AuthController {
    * @param {NextFunction} next - The next middleware function in the processing chain.
    */
   async handleLoginRequest(req: Request, res: Response, next: NextFunction) {
-    // TODO: Update verify the body request using middleware
     try {
       const { username, password }: User = req.body;
-      const isInvalidRequest = !username || !password;
-
-      if (isInvalidRequest) {
-        return next(EXCEPTIONS.BAD_REQUEST_EXCEPTION);
-      }
 
       const user = await getUserByUsername(username);
 
