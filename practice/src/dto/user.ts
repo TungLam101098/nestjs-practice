@@ -10,7 +10,7 @@ class UserDTO {
     this.username = user.username;
     this.email = user.email;
     this.password = user.password;
-    this.isAdmin = user.isAdmin;
+    this.isAdmin = user.isAdmin || false;
   }
 }
 

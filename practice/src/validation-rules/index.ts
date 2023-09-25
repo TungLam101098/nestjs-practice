@@ -1,5 +1,10 @@
 import loginValidationRules from './login';
 import registerValidationRules from './register';
-import courseValidationRules from './course';
+import { courseAddedValidationRules, courseUpdatedValidationRules } from './course';
 
-export { loginValidationRules, registerValidationRules, courseValidationRules };
+export {
+  loginValidationRules,
+  registerValidationRules,
+  courseAddedValidationRules,
+  courseUpdatedValidationRules,
+};

@@ -8,7 +8,7 @@ class CourseDTO {
   constructor(user: Course) {
     this.name = user.name;
     this.category = user.category;
-    this.description = user.description;
+    this.description = user.description || '';
   }
 }
 
