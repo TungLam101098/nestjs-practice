@@ -16,14 +16,8 @@ class AuthController {
    * @param {NextFunction} next - The next middleware function in the processing chain.
    */
   async handleRegistrationRequest(req: Request, res: Response, next: NextFunction) {
-    // TODO: Verify the body request using middleware
     try {
       const { username, password, email, isAdmin }: User = req.body;
-      const isInvalidRequest = !username || !password || !email;
-
-      if (isInvalidRequest) {
-        return next(EXCEPTIONS.BAD_REQUEST_EXCEPTION);
-      }
 
       const foundUser = await getUserByUsername(username);
 
