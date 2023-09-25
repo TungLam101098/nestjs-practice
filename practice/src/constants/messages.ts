@@ -48,5 +48,9 @@ export default {
       CODE: 409,
       MESSAGE: 'Courses are existed',
     },
+    CATEGORY_EXISTS: {
+      CODE: 409,
+      MESSAGE: 'Category name is existed',
+    },
   },
 };
