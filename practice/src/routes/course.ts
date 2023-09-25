@@ -3,7 +3,7 @@ import { Router } from 'express';
 import CourseController from '@controllers/course-controller';
 import validate from '@middlewares/validator';
 import { verifyToken } from '@middlewares/auth-handler';
-import { courseValidationRules } from '@validation-rules';
+import { courseAddedValidationRules, courseUpdatedValidationRules } from '@validation-rules';
 
 const router = Router();
 const courseInstance = CourseController.getInstance();
@@ -18,13 +18,19 @@ router.get('/:id', verifyToken, courseInstance.handleGetCourseDetailRequest);
 router.post(
   '/',
   verifyToken,
-  courseValidationRules,
+  courseAddedValidationRules,
   validate,
   courseInstance.handleCreateCoursesRequest
 );
 
 // Route to handle PUT requests for update course by id
-router.put('/:id', verifyToken, courseInstance.handleUpdateCourseRequest);
+router.put(
+  '/:id',
+  verifyToken,
+  courseUpdatedValidationRules,
+  validate,
+  courseInstance.handleUpdateCourseRequest
+);
 
 // Route to handle DELETE requests for delete course by id
 router.delete('/:id', verifyToken, courseInstance.handleDeleteCourseRequest);

@@ -107,12 +107,7 @@ class CourseController {
         return next(EXCEPTIONS.PERMISSION_DENIED_EXCEPTION);
       }
 
-      const { name, category, description }: Course = req.body;
-      const isInvalidRequest = !name || !category || !description;
-
-      if (isInvalidRequest) {
-        return next(EXCEPTIONS.BAD_REQUEST_EXCEPTION);
-      }
+      const { name }: Course = req.body;
 
       const courseId = req.params.id;
 
