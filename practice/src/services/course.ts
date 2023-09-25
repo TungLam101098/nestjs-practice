@@ -1,6 +1,7 @@
 import { FilterQuery } from 'mongoose';
 
 import course from '@schemas/course';
+import CourseDTO from '@dto/course';
 import { Course } from '@interfaces';
 
 /**
@@ -38,7 +39,11 @@ const getCoursesByCondition = async (condition: FilterQuery<Course>) =>
  * @returns {Promise<Course[]>} - A promise that resolves to an array of saved courses
  */
 const saveCourses = async (courseData: Course[]) => {
-  const courseFunctions = courseData.map((courseInfo) => course.create(courseInfo));
+  const courseFunctions = courseData.map((courseInfo) => {
+    const courseDTO = new CourseDTO(courseInfo);
+
+    return course.create(courseDTO);
+  });
   const savedCourses = await Promise.all(courseFunctions);
 
   return savedCourses;
