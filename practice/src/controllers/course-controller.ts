@@ -31,12 +31,6 @@ class CourseController {
         return next(EXCEPTIONS.PERMISSION_DENIED_EXCEPTION);
       }
 
-      const isInvalidRequest = typeof req.body !== 'object' || !req.body.length;
-
-      if (isInvalidRequest) {
-        return next(EXCEPTIONS.BAD_REQUEST_EXCEPTION);
-      }
-
       const courseNames = req.body.map((course: Course) => course.name);
       const foundCourses = await getCoursesByName(courseNames);
       const isExistsCourses = !!foundCourses.length;
