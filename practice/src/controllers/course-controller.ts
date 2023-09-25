@@ -9,6 +9,7 @@ import {
   updateCourseById,
   getCoursesByCondition,
 } from '@services/course';
+import { getCategories } from '@services/category';
 import { ensureError, logger } from '@utils';
 import { AuthenticatedRequest, Course } from '@interfaces';
 import { EXCEPTIONS } from '@constants';
@@ -31,12 +32,25 @@ class CourseController {
         return next(EXCEPTIONS.PERMISSION_DENIED_EXCEPTION);
       }
 
-      const courseNames = req.body.map((course: Course) => course.name);
-      const foundCourses = await getCoursesByName(courseNames);
+      const coursesData = {
+        names: req.body.map((course: Course) => course.name),
+        categories: req.body.map((course: Course) => course.category),
+      };
+      const foundCourses = await getCoursesByName(coursesData.names);
       const isExistsCourses = !!foundCourses.length;
 
       if (isExistsCourses) {
         return next(EXCEPTIONS.COURSES_NAME_EXISTS_EXCEPTION);
+      }
+
+      const categories = await getCategories();
+      const categoryNames = categories.map((category) => category.name);
+      const isNotExistsCategory = !coursesData.categories.every((category: string) =>
+        categoryNames.includes(category)
+      );
+
+      if (isNotExistsCategory) {
+        return next(EXCEPTIONS.CATEGORY_NOT_EXISTS_EXCEPTION);
       }
 
       const courses = await saveCourses(req.body);

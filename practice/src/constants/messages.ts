@@ -52,5 +52,9 @@ export default {
       CODE: 409,
       MESSAGE: 'Category name is existed',
     },
+    CATEGORY_NOT_EXISTS: {
+      CODE: 409,
+      MESSAGE: 'Category name is existed',
+    },
   },
 };
