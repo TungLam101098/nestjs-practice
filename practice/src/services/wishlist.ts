@@ -1,4 +1,5 @@
 import wishlist from '@schemas/wishlist';
+import WishlistDTO from '@dto/wishlist';
 import { Wishlist } from '@interfaces';
 
 /**
@@ -6,7 +7,11 @@ import { Wishlist } from '@interfaces';
  * @param {Wishlist} wishlistData - The wishlist data to be saved
  * @returns {Promise<Wishlist>} - A promise that resolves to the saved wishlist item
  */
-const saveWishlist = async (wishlistData: Wishlist) => await wishlist.create(wishlistData);
+const saveWishlist = async (wishlistData: Wishlist) => {
+  const wishlistDTO = new WishlistDTO(wishlistData);
+
+  return await wishlist.create(wishlistDTO);
+};
 
 /**
  * Retrieves a wishlist item by userId from the database
