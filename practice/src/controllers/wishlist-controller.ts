@@ -25,14 +25,8 @@ class WishlistController {
     res: Response,
     next: NextFunction
   ) {
-    // TODO: Verify the body request using middleware
     try {
       const courseIdsRequest: string[] = req.body;
-      const isInvalidRequest = !(typeof courseIdsRequest === 'object') || !courseIdsRequest.length;
-
-      if (isInvalidRequest) {
-        return next(EXCEPTIONS.BAD_REQUEST_EXCEPTION);
-      }
 
       const userId = req.userId;
 
