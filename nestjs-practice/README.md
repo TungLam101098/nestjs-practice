@@ -57,7 +57,7 @@ The application implements role-based access control:
 
 ```bash
 # Clone the repository
-git clone -b feat/nestjs-practice git@gitlab.asoft-python.com:lam.nguyen/nodejs-training.git
+git clone -b develop git@gitlab.asoft-python.com:lam.nguyen/nodejs-training.git
 
 # Navigate to the project directory
 cd nodejs-training/nestjs-practice/
