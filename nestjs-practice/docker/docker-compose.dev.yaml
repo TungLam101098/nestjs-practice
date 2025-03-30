@@ -1,0 +1,21 @@
+services:
+  api:
+    container_name: nest_api
+    build:
+      context: ..
+      target: development
+    ports:
+      - "${PORT}:${PORT}"
+    volumes:
+      - ..:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - nest-network
+
+  postgres:
+    extends:
+      file: docker-compose.database.yaml
+      service: postgres

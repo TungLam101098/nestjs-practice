@@ -1,0 +1,20 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "words": [
+    "nestjs",
+    "typeorm",
+    "eslintrc",
+    "tsconfig"
+  ],
+  "ignorePaths": [
+    "node_modules/**",
+    "dist/**",
+    "coverage/**",
+    "*.lock",
+    "package-lock.json",
+    "package.json"
+  ],
+  "ignoreWords": ["dtos", "ILIKE", "initdb", "isready", "ossp"],
+  "allowCompoundWords": true
+}
