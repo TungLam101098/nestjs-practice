@@ -1,8 +1,11 @@
+import { createKeyv } from '@keyv/redis';
 import { CacheModule } from '@nestjs/cache-manager';
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { CacheableMemory } from 'cacheable';
+import { Keyv } from 'keyv';
 
 import { dbConfig } from '@/config';
 import { AuthModule } from '@/modules/auth/auth.module';
@@ -19,7 +22,7 @@ import { validationSchema } from '@/validations';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { CACHE } from './constants';
+import { CACHE, PORTS } from './constants';
 
 @Module({
   imports: [
@@ -31,9 +34,23 @@ import { CACHE } from './constants';
     TypeOrmModule.forRootAsync({
       useFactory: dbConfig,
     }),
-    CacheModule.register({
-      ttl: CACHE.TTL, // seconds
+    CacheModule.registerAsync({
       isGlobal: true,
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: () => {
+        return {
+          stores: [
+            new Keyv({
+              store: new CacheableMemory({
+                ttl: CACHE.TTL,
+                lruSize: CACHE.LRU_SIZE,
+              }),
+            }),
+            createKeyv(`redis://nest_redis:${PORTS.REDIS}`),
+          ],
+        };
+      },
     }),
     UsersModule,
     AuthModule,
