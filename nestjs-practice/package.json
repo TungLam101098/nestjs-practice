@@ -26,11 +26,12 @@
     "migration:generate": "npm run typeorm -- migration:generate src/scripts/migrations/$npm_config_name",
     "migration:run": "npm run typeorm -- migration:run",
     "migration:revert": "npm run typeorm -- migration:revert",
-    "docker:dev": "docker compose --env-file .env -f docker/docker-compose.database.yaml -f docker/docker-compose.dev.yaml up --build",
-    "docker:prod": "docker compose --env-file .env -f docker/docker-compose.database.yaml -f docker/docker-compose.prod.yaml up --build",
+    "docker:dev": "docker compose --env-file .env -f docker/docker-compose.database.yaml -f docker/docker-compose.cache.yaml -f docker/docker-compose.dev.yaml up --build",
+    "docker:prod": "docker compose --env-file .env -f docker/docker-compose.database.yaml -f docker/docker-compose.cache.yaml -f docker/docker-compose.prod.yaml up --build",
     "docker:down": "docker compose down"
   },
   "dependencies": {
+    "@keyv/redis": "4.3.3",
     "@nestjs/cache-manager": "3.0.1",
     "@nestjs/common": "11.0.10",
     "@nestjs/config": "4.0.0",
@@ -43,6 +44,7 @@
     "@nestjs/typeorm": "11.0.0",
     "bcrypt": "5.1.1",
     "cache-manager": "6.4.1",
+    "cacheable": "1.8.10",
     "dayjs": "1.11.13",
     "joi": "17.13.3",
     "passport-jwt": "4.0.1",
