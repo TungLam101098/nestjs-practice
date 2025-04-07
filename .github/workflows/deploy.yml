@@ -50,9 +50,6 @@ jobs:
             git checkout develop
             git pull origin develop
             cd nestjs-practice
-            npm install
-            npm run build
-            cd docker
             docker-compose --env-file .env -f docker/docker-compose.database.yaml -f docker/docker-compose.cache.yaml -f docker/docker-compose.prod.yaml down
             docker compose --env-file .env -f docker/docker-compose.database.yaml -f docker/docker-compose.cache.yaml -f docker/docker-compose.prod.yaml up --build -d
           EOF
