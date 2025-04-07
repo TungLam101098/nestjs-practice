@@ -1,0 +1,51 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout source code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      # Install dependencies and build application inside nestjs-practice folder
+      - name: Install dependencies
+        working-directory: nestjs-practice
+        run: npm install
+
+      - name: Build application
+        working-directory: nestjs-practice
+        run: npm run build
+
+      # Deploy to VPS
+      - name: Deploy to VPS
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+        run: |
+          echo "$SSH_PRIVATE_KEY" > private_key
+          chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key $VPS_USER@$VPS_HOST << 'EOF'
+            cd /path/to/your-repo
+            git fetch origin
+            git checkout develop
+            git pull origin develop
+            cd nestjs-practice
+            npm install
+            npm run build
+            docker-compose down
+            docker compose --env-file .env -f docker/docker-compose.database.yaml -f docker/docker-compose.cache.yaml -f docker/docker-compose.prod.yaml up --build
+          EOF
+          rm private_key
