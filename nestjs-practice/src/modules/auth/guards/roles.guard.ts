@@ -52,7 +52,7 @@ export class RolesGuard implements CanActivate {
 
       return handleError({
         defaultMessage: `User role ${request.user.role} is not authorized`,
-        CustomException: UnauthorizedException,
+        ExceptionClass: UnauthorizedException,
       });
     }
 

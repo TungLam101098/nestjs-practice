@@ -55,7 +55,7 @@ export class JwtAuthGuard extends AuthGuard(AuthStrategies.Jwt) {
       return handleError({
         error: err,
         defaultMessage: MESSAGES.MISSING_TOKEN,
-        CustomException: UnauthorizedException,
+        ExceptionClass: UnauthorizedException,
       });
     }
 

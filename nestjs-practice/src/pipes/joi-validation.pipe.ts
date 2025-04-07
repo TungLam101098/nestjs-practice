@@ -1,8 +1,8 @@
 import {
-  PipeTransform,
-  Injectable,
-  BadRequestException,
   ArgumentMetadata,
+  BadRequestException,
+  Injectable,
+  PipeTransform,
 } from '@nestjs/common';
 import { ObjectSchema } from 'joi';
 
@@ -22,7 +22,7 @@ export class JoiValidationPipe<T> implements PipeTransform<T, T> {
     if (isEmptyBodyRequest) {
       return handleError({
         defaultMessage: MESSAGES.VALIDATE_EMPTY_BODY,
-        CustomException: BadRequestException,
+        ExceptionClass: BadRequestException,
       });
     }
 
@@ -35,7 +35,7 @@ export class JoiValidationPipe<T> implements PipeTransform<T, T> {
       return handleError({
         error,
         defaultMessage: MESSAGES.VALIDATE_FAILED,
-        CustomException: BadRequestException,
+        ExceptionClass: BadRequestException,
       });
     }
 

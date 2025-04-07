@@ -1,8 +1,8 @@
 import {
-  HttpException,
-  InternalServerErrorException,
   BadRequestException,
+  HttpException,
   HttpStatus,
+  InternalServerErrorException,
 } from '@nestjs/common';
 
 import { MESSAGES } from '@/constants';
@@ -64,7 +64,7 @@ describe('Error Utils', () => {
         handleError({
           error,
           defaultMessage: EMAIL_ALREADY_EXISTS,
-          CustomException: BadRequestException,
+          ExceptionClass: BadRequestException,
         });
       }).toThrow(BadRequestException);
     });

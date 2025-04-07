@@ -7,17 +7,17 @@ import { ErrorResponse, HttpExceptionResponse } from '@/interfaces';
  *
  * @param options.error - Optional caught error
  * @param options.defaultMessage - Default message if error is not an Error instance
- * @param options.CustomException - Optional custom exception class (defaults to InternalServerErrorException)
+ * @param options.ExceptionClass - Optional custom exception class (defaults to InternalServerErrorException)
  * @throws HttpException Always throws an exception
  */
 export const handleError = ({
   error,
   defaultMessage,
-  CustomException = InternalServerErrorException,
+  ExceptionClass = InternalServerErrorException,
 }: {
   error?: unknown;
   defaultMessage: string;
-  CustomException?: new (
+  ExceptionClass?: new (
     objectOrError?: string | object,
     description?: string,
   ) => HttpException;
@@ -30,14 +30,14 @@ export const handleError = ({
       status: error.getStatus(),
     };
 
-    throw new CustomException(errorResponse);
+    throw new ExceptionClass(errorResponse);
   }
 
   const errorResponse: ErrorResponse = {
     message: error instanceof Error ? error.message : defaultMessage,
-    error: CustomException.name,
-    status: new CustomException().getStatus(),
+    error: ExceptionClass.name,
+    status: new ExceptionClass().getStatus(),
   };
 
-  throw new CustomException(errorResponse);
+  throw new ExceptionClass(errorResponse);
 };

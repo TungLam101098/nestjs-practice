@@ -1,4 +1,4 @@
-import { PipeTransform, Injectable, BadRequestException } from '@nestjs/common';
+import { BadRequestException, Injectable, PipeTransform } from '@nestjs/common';
 
 import { MESSAGES, REGEX } from '@/constants';
 import { handleError } from '@/utils';
@@ -11,7 +11,7 @@ export class UuidValidationPipe implements PipeTransform<string> {
     if (isInvalidUuid) {
       return handleError({
         defaultMessage: MESSAGES.INVALID_ID,
-        CustomException: BadRequestException,
+        ExceptionClass: BadRequestException,
       });
     }
 

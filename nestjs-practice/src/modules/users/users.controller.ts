@@ -153,7 +153,7 @@ export class UsersController {
     if (!isUpdatingOwnProfile) {
       return handleError({
         defaultMessage: MESSAGES.PERMISSION_DENIED,
-        CustomException: UnauthorizedException,
+        ExceptionClass: UnauthorizedException,
       });
     }
 

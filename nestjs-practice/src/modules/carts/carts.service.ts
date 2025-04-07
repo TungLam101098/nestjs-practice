@@ -104,7 +104,7 @@ export class CartsService {
 
           return handleError({
             defaultMessage: `Food with ID ${item.foodId} not found`,
-            CustomException: NotFoundException,
+            ExceptionClass: NotFoundException,
           });
         }
 
@@ -147,7 +147,7 @@ export class CartsService {
 
         return handleError({
           defaultMessage: MESSAGES.CART_NOT_FOUND,
-          CustomException: NotFoundException,
+          ExceptionClass: NotFoundException,
         });
       }
 
