@@ -13,11 +13,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Setup Node.js
+      # Setup Node.js (dùng phiên bản 20 để tương thích)
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '20'  # Cập nhật lên 20 để tránh cảnh báo
 
       # Install dependencies and build application inside nestjs-practice folder
       - name: Install dependencies
@@ -40,7 +40,7 @@ jobs:
           # Debug: Check the contents of the private key
           head -n 2 private_key
           ssh -v -o StrictHostKeyChecking=no -i private_key $VPS_USER@$VPS_HOST << 'EOF'
-            mkdir -p /nestjs-practice  # Ensure the directory exists
+            mkdir -p /nestjs-practice
             cd /nestjs-practice
             if [ ! -d .git ]; then
               git init
@@ -52,8 +52,8 @@ jobs:
             cd nestjs-practice
             npm install
             npm run build
-            cd ../docker  # Move to the docker directory where compose files are located
-            docker-compose down  # Stop any running containers
-            docker-compose --env-file ../nestjs-practice/.env -f docker-compose.database.yaml -f docker-compose.cache.yaml -f docker-compose.prod.yaml up --build -d
+            cd docker
+            docker-compose down
+            docker-compose --env-file ../.env -f docker-compose.database.yaml -f docker-compose.cache.yaml -f docker-compose.prod.yaml up --build -d
           EOF
           rm private_key
