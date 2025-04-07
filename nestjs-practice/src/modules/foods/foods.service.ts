@@ -110,7 +110,7 @@ export class FoodsService {
 
       return handleError({
         defaultMessage: `Food with ID ${id} not found`,
-        CustomException: NotFoundException,
+        ExceptionClass: NotFoundException,
       });
     }
 
@@ -194,7 +194,7 @@ export class FoodsService {
 
       return handleError({
         defaultMessage: MESSAGES.FOOD_NOT_FOUND,
-        CustomException: NotFoundException,
+        ExceptionClass: NotFoundException,
       });
     }
 

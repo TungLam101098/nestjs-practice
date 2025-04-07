@@ -59,7 +59,7 @@ export class OrdersService {
 
       return handleError({
         defaultMessage: MESSAGES.CART_NOT_FOUND,
-        CustomException: NotFoundException,
+        ExceptionClass: NotFoundException,
       });
     }
 
@@ -74,7 +74,7 @@ export class OrdersService {
 
       return handleError({
         defaultMessage: MESSAGES.INVALID_CART_ITEM,
-        CustomException: BadRequestException,
+        ExceptionClass: BadRequestException,
       });
     }
 
@@ -129,7 +129,7 @@ export class OrdersService {
 
         return handleError({
           defaultMessage: `Order with id ${savedOrder.id} not found`,
-          CustomException: NotFoundException,
+          ExceptionClass: NotFoundException,
         });
       }
 
@@ -224,7 +224,7 @@ export class OrdersService {
 
         return handleError({
           defaultMessage: MESSAGES.ORDER_NOT_FOUND,
-          CustomException: NotFoundException,
+          ExceptionClass: NotFoundException,
         });
       }
 

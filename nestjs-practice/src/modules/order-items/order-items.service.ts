@@ -49,7 +49,7 @@ export class OrderItemsService {
 
         return handleError({
           defaultMessage: MESSAGES.ORDER_ITEM_NOT_FOUND,
-          CustomException: NotFoundException,
+          ExceptionClass: NotFoundException,
         });
       }
 
@@ -64,7 +64,7 @@ export class OrderItemsService {
 
         return handleError({
           defaultMessage: MESSAGES.PERMISSION_DENIED,
-          CustomException: ForbiddenException,
+          ExceptionClass: ForbiddenException,
         });
       }
 

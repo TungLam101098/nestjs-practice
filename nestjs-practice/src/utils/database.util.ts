@@ -43,7 +43,7 @@ export async function updateEntity<
   if (!updatedEntity) {
     return handleError({
       defaultMessage: errorMessage,
-      CustomException: InternalServerErrorException,
+      ExceptionClass: InternalServerErrorException,
     });
   }
 

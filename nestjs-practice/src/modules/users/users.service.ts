@@ -65,7 +65,7 @@ export class UsersService {
 
       return handleError({
         defaultMessage: MESSAGES.EMAIL_ALREADY_EXISTS,
-        CustomException: ConflictException,
+        ExceptionClass: ConflictException,
       });
     }
 
@@ -199,7 +199,7 @@ export class UsersService {
 
       return handleError({
         defaultMessage: MESSAGES.USER_NOT_FOUND,
-        CustomException: NotFoundException,
+        ExceptionClass: NotFoundException,
       });
     }
 
@@ -236,7 +236,7 @@ export class UsersService {
 
       return handleError({
         defaultMessage: MESSAGES.USER_NOT_FOUND,
-        CustomException: NotFoundException,
+        ExceptionClass: NotFoundException,
       });
     }
 
@@ -301,7 +301,7 @@ export class UsersService {
 
       return handleError({
         defaultMessage: MESSAGES.USER_NOT_FOUND,
-        CustomException: NotFoundException,
+        ExceptionClass: NotFoundException,
       });
     }
 

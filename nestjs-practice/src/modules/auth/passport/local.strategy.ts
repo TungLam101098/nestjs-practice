@@ -34,7 +34,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
     if (!user) {
       return handleError({
         defaultMessage: MESSAGES.INVALID_CREDENTIALS,
-        CustomException: UnauthorizedException,
+        ExceptionClass: UnauthorizedException,
       });
     }
 
