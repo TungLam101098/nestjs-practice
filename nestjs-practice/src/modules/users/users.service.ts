@@ -128,7 +128,7 @@ export class UsersService {
         email,
       };
 
-      this.logger.log(`Fetching users with query: ${JSON.stringify(query)}`);
+      this.logger.log(`Fetching users with query ${JSON.stringify(query)}`);
 
       // Select fields to return
       const selectFields = getSelectFields(USER_SELECT_FIELDS);
