@@ -40,12 +40,7 @@ jobs:
           # Debug: Check the contents of the private key
           head -n 2 private_key
           ssh -v -o StrictHostKeyChecking=no -i private_key $VPS_USER@$VPS_HOST << 'EOF'
-            mkdir -p /nestjs-practice
             cd /nestjs-practice
-            if [ ! -d .git ]; then
-              git init
-              git remote add origin https://github.com/TungLam101098/nestjs-practice.git
-            fi
             git fetch origin
             git checkout develop
             git pull origin develop
