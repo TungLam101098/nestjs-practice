@@ -40,7 +40,7 @@ jobs:
           # Debug: Check the contents of the private key
           head -n 2 private_key
           ssh -v -o StrictHostKeyChecking=no -i private_key $VPS_USER@$VPS_HOST << 'EOF'
-            cd /path/to/your-repo
+            cd /nestjs-practice
             git fetch origin
             git checkout develop
             git pull origin develop
