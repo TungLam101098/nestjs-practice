@@ -1,4 +1,4 @@
-import { CacheInterceptor } from '@nestjs/cache-manager';
+import { CacheInterceptor, CacheKey } from '@nestjs/cache-manager';
 import {
   Body,
   Controller,
@@ -26,7 +26,7 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 
-import { MESSAGES } from '@/constants';
+import { CACHE, MESSAGES } from '@/constants';
 import { Roles } from '@/decorators';
 import { AuthenticatedRequest } from '@/interfaces';
 import { JoiValidationPipe, UuidValidationPipe } from '@/pipes';
@@ -87,6 +87,7 @@ export class UsersController {
     description: MESSAGES.MISSING_TOKEN,
   })
   @UseInterceptors(CacheInterceptor)
+  @CacheKey(CACHE.USERS.FIND_ALL)
   async findAll(
     @Query(new JoiValidationPipe(UserQueryParamsSchema))
     userQueryParamsDto: UserQueryParamsDto,
@@ -110,7 +111,6 @@ export class UsersController {
   @ApiNotFoundResponse({
     description: MESSAGES.USER_NOT_FOUND,
   })
-  @UseInterceptors(CacheInterceptor)
   async findById(
     @Param('id', UuidValidationPipe) id: string,
   ): Promise<UserResponseDto> {

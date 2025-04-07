@@ -1,13 +1,16 @@
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import {
   ConflictException,
   Injectable,
   Logger,
   NotFoundException,
 } from '@nestjs/common';
+import { Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Cache } from 'cache-manager';
 import { Repository } from 'typeorm';
 
-import { MESSAGES } from '@/constants';
+import { CACHE, MESSAGES } from '@/constants';
 import { PaginationResponse } from '@/interfaces';
 import {
   applyFilters,
@@ -32,8 +35,8 @@ import { UserResponse } from './interfaces/user-response.interface';
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectRepository(User)
-    private usersRepository: Repository<User>,
+    @InjectRepository(User) private usersRepository: Repository<User>,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
 
   // Add logger
@@ -260,6 +263,9 @@ export class UsersService {
 
       this.logger.log(`User with id ${id} updated successfully`);
 
+      // After successful update, invalidate the relevant caches
+      await this.invalidateUserCaches();
+
       // Update user using helper function
       return updatedUser;
     } catch (error: unknown) {
@@ -319,6 +325,9 @@ export class UsersService {
 
       this.logger.log(`User with id ${id} deleted successfully`);
 
+      // After successful deletion, invalidate the relevant caches
+      await this.invalidateUserCaches();
+
       return {
         success: true,
         id: updatedUser.id,
@@ -365,5 +374,12 @@ export class UsersService {
         defaultMessage: MESSAGES.INVALID_CREDENTIALS,
       });
     }
+  }
+
+  /**
+   * Clears the cache for user-related data
+   */
+  private async invalidateUserCaches(): Promise<void> {
+    await this.cacheManager.del(CACHE.USERS.FIND_ALL);
   }
 }

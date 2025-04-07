@@ -4,4 +4,5 @@
 export const PORTS = {
   APPLICATION: 8080,
   DATABASE: 5432,
+  REDIS: 6379,
 };
