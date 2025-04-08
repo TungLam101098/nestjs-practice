@@ -45,6 +45,9 @@ jobs:
             git checkout develop
             git pull origin develop
             cd nestjs-practice
+            echo "Current directory: $(pwd)"
+            echo "Env file:"
+            ls -lah .env
             docker-compose --env-file .env -f docker/docker-compose.database.yaml -f docker/docker-compose.cache.yaml -f docker/docker-compose.prod.yaml down
             docker compose --env-file .env -f docker/docker-compose.database.yaml -f docker/docker-compose.cache.yaml -f docker/docker-compose.prod.yaml up --build -d
           EOF
