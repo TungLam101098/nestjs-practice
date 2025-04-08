@@ -38,16 +38,26 @@ jobs:
         run: |
           echo "$SSH_PRIVATE_KEY" > private_key
           chmod 600 private_key
-          # Debug: Check the contents of the private key
-          head -n 2 private_key
-          ssh -v -o StrictHostKeyChecking=no -i private_key $VPS_USER@$VPS_HOST << 'EOF'
+
+          ssh -o StrictHostKeyChecking=no -i private_key $VPS_USER@$VPS_HOST << 'EOF'
             cd /nestjs-practice
             git fetch origin
             git checkout develop
             git pull origin develop
             cd nestjs-practice
-            echo "${ENV_FILE}" > .env
-            docker-compose --env-file .env -f docker/docker-compose.database.yaml -f docker/docker-compose.cache.yaml -f docker/docker-compose.prod.yaml down
-            docker compose --env-file .env -f docker/docker-compose.database.yaml -f docker/docker-compose.cache.yaml -f docker/docker-compose.prod.yaml up --build -d
+
+            # Ghi nội dung từ ENV_FILE vào file .env
+            echo "$ENV_FILE" > .env
+
+            # Kiểm tra nội dung .env (tùy chọn, để debug)
+            echo "---------- .env ----------"
+            cat .env
+            echo "--------------------------"
+
+            # Chạy docker compose
+            docker compose --env-file .env \
+              -f docker/docker-compose.database.yaml \
+              -f docker/docker-compose.cache.yaml \
+              -f docker/docker-compose.prod.yaml \
+              up --build -d
           EOF
-          rm private_key
