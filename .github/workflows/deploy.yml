@@ -13,11 +13,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Setup Node.js (dùng phiên bản 20 để tương thích)
+      # Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20'  # Cập nhật lên 20 để tránh cảnh báo
+          node-version: '20'
 
       # Install dependencies and build application inside nestjs-practice folder
       - name: Install dependencies
@@ -34,6 +34,7 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           VPS_HOST: ${{ secrets.VPS_HOST }}
           VPS_USER: ${{ secrets.VPS_USER }}
+          ENV_FILE: ${{ secrets.ENV_FILE }}
         run: |
           echo "$SSH_PRIVATE_KEY" > private_key
           chmod 600 private_key
@@ -45,9 +46,7 @@ jobs:
             git checkout develop
             git pull origin develop
             cd nestjs-practice
-            echo "Current directory: $(pwd)"
-            echo "Env file:"
-            ls -lah .env
+            echo "${ENV_FILE}" > .env
             docker-compose --env-file .env -f docker/docker-compose.database.yaml -f docker/docker-compose.cache.yaml -f docker/docker-compose.prod.yaml down
             docker compose --env-file .env -f docker/docker-compose.database.yaml -f docker/docker-compose.cache.yaml -f docker/docker-compose.prod.yaml up --build -d
           EOF
