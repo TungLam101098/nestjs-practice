@@ -46,15 +46,13 @@ jobs:
             git pull origin develop
             cd nestjs-practice
 
-            # Ghi nội dung từ ENV_FILE vào file .env
-            echo "$ENV_FILE" > .env
+            # Tạo .env bằng cách decode từ base64
+            echo "$ENV_FILE" | base64 -d > .env
 
-            # Kiểm tra nội dung .env (tùy chọn, để debug)
             echo "---------- .env ----------"
             cat .env
             echo "--------------------------"
 
-            # Chạy docker compose
             docker compose --env-file .env \
               -f docker/docker-compose.database.yaml \
               -f docker/docker-compose.cache.yaml \
